@@ -1,0 +1,74 @@
+Config {
+   -- Appearance
+   font = "xft:Mononoki Nerd Font:size=10:bold:antialias=true",
+   additionalFonts = ["xft:Mononoki Nerd Font:size=12:bold"],
+   bgColor = "#1e222a",  -- Dark background
+   fgColor = "#c0c5ce",  -- Light gray foreground for text
+   position = Top,       -- Position of xmobar at the top
+   border = BottomB,
+   borderColor = "#282c34",
+
+   -- Commands
+   commands = [
+       -- Time and date
+       Run Date "%a %b %d %H:%M" "date" 50,
+
+       -- CPU temperature
+       Run Com "sensors" ["| grep 'Package id 0:' | awk '{print $4}'"] "temp" 50,
+
+       -- Battery percentage
+       Run Battery [
+           "-t", "<acstatus>",
+           "-L", "20", "-H", "80",
+           "--low", "red", "--high", "green",
+           "-f", "Mononoki Nerd Font 10",
+           "--", 
+           "-O", "<fc=#98c379>Charging</fc>",
+           "-o", "<left>% <fc=#e5c07b>Battery</fc>",
+           "-i", "<fc=#98c379>Charged</fc>"
+       ] 50,
+
+       -- CPU usage
+       Run Cpu ["-t", "CPU: <total>%", "-L", "20", "-H", "80", "--low", "green", "--high", "red"] 20,
+
+       -- Network activity
+       Run Wireless "wlan0" ["-t", "<essid> <quality>%"] 50,
+
+       -- Memory usage
+       Run Memory ["-t", "Mem: <usedratio>%"] 20,
+
+       -- System load average
+       Run LoadAvg ["-t", "Load: <avg1>"] 50,
+
+       -- Volume
+       Run Volume "default" "Master" [
+           "-t", "Vol: <volume>% <status>",
+           "--", "-O", "[on]", "-o", "[off]"
+       ] 10,
+
+       -- Battery level
+       Run BatteryP ["BAT0"] [
+           "-t", "<acstatus>",
+           "-L", "20", "-H", "80",
+           "--low", "red", "--high", "green",
+           "--", "-O", "Charging", "-o", "Discharging"
+       ] 50,
+
+       -- Brightness level
+       Run Com "xbacklight" ["-get"] "brightness" 50,
+
+       -- Disk usage
+       Run DiskU [
+           ("/", "Disk: <used>/<size>"),
+           ("/home", "Home: <used>/<size>")
+       ] [] 60,
+
+       -- Core temperature
+       Run ThermalZone 0 ["-t", "Temp: <temp>C"] 50
+   ],
+
+   -- Layout
+   sepChar = "%",
+   alignSep = "}{",
+   template = " %date% | %cpu% | %memory% | %battery% | %wlan0wi% | %disku% | %temp% | %brightness% }{"
+}
