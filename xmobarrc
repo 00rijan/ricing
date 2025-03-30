@@ -1,0 +1,48 @@
+Config { font = "xft:Ubuntu:weight=bold:pixelsize=10:antialias=true:hinting=true,Font Awesome 5 Free Regular:pixelsize=8"
+       , additionalFonts = ["xft:Mononoki Nerd Font:pixelsize=8:antialias=true:hinting=true",
+                            "xft:Font Awesome 6 Free Solid:pixelsize=8",
+			    "xft:FontAwesome:pixelsize=8",
+			    "xft:Font Awesome 6 Free Solid:pixelsize=8",
+			    "xft:Font Awesome 6 Free Regular:pixelsize=8",
+			    "xft:Mononoki Nerd Font:weight=bold:pixelsize=8:antialias=true:hinting=true",
+			    "xft:Font Awesome 6 Brands:pixelsize=8",
+			    "xft:Mononoki Nerd Font:weight=bold:pixelsize=8:antialias=true:hinting=true",
+			    "xft:Mononoki Nerd Font:pixelsize=8:antialias=true:hinting=true"
+			    ]
+       , bgColor = "#2e3440"
+       , fgColor = "#ff6c6b"
+       , position = TopSize L 100 22
+       , lowerOnStart = True
+       , hideOnStart = False
+       , allDesktops = True
+       , persistent = True
+       , iconRoot = "."
+       , commands = [ 
+                      -- Time and date
+                      Run Date "<fn=5>  </fn> %b %d " "date" 50
+                    , Run Date "<fn=5>  </fn> %H:%M " "time" 60
+
+		      -- Network
+                    , Run Network "wlp2s0" ["-t", "<fn=3> </fn> <rx> kb  <fn=3> </fn> <tx> kb"] 20
+                      
+		      -- Cpu usage in percent
+                    , Run Cpu ["-t", "<total>%"] 20
+
+                      -- Cpu core temperature monitor
+                    , Run CoreTemp ["-t", "<fn=2>   </fn> <core0>°C"] 20
+
+		      -- Ram used in percent
+                    , Run Memory ["-t", "<fn=2>   </fn> <usedratio>%"] 20
+                    
+		    -- Disk space free
+                    , Run DiskU [("/", "<fn=2>   </fn> <used>")] [] 20
+
+                    -- battery
+                    , Run BatteryP ["BAT0"]["-t", "<fn=2>   </fn><left>%"] 20
+
+		    , Run StdinReader
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "<fc=#2e3440> %StdinReader% </fc> <fc=#73d0ff> %coretemp% / %cpu% </fc> <fc=#ff79c6> %memory% </fc> <fc=#73d0ff> %wlp2s0% </fc> }{ <fc=#ff79c6> %disku% </fc> <fc=#d4bfff> %battery% </fc> <fc=#73d0ff> %date% </fc> <fc=#73d0ff> %time% </fc>"
+       }
